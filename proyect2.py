@@ -10,7 +10,7 @@ from scipy.optimize import curve_fit
 from sklearn.metrics import r2_score
 
 # Se lee la data
-uploaded_file = st.file_uploader('Choose a file')
+uploaded_file = st.file_uploader('Elige un archivo:')
 
 if uploaded_file is not None:
     raw_data = pd.read_csv(uploaded_file)
