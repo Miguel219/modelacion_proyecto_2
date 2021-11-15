@@ -119,8 +119,8 @@ if uploaded_file is not None:
                 st.subheader('Modelo exponencial')
 
                 st.text('Score r2: ' +
-                        str(r2_score(raw_data['TCR1'], raw_data['expModel'])))
-
+                        str(round(
+                            r2_score(raw_data['TCR1'], raw_data['expModel']), 5)))
                 st.plotly_chart(chart1)
 
             # ---------------------------------------------------------------------------- #
@@ -143,8 +143,8 @@ if uploaded_file is not None:
                 st.subheader('Modelo logarítmico')
 
                 st.text('Score r2: ' +
-                        str(r2_score(raw_data['TCR1'], raw_data['logModel'])))
-
+                        str(round(
+                            r2_score(raw_data['TCR1'], raw_data['logModel']), 5)))
                 st.plotly_chart(chart2)
 
             # ---------------------------------------------------------------------------- #
@@ -184,8 +184,8 @@ if uploaded_file is not None:
                 chart3 = px.line(raw_data, x='date', y=['TCR1', 'polModel'])
 
                 st.text('Score r2: ' +
-                        str(r2_score(raw_data['TCR1'], raw_data['polModel'])))
-
+                        str(round(
+                            r2_score(raw_data['TCR1'], raw_data['polModel']), 5)))
                 st.write(chart3)
 
             # ---------------------------------------------------------------------------- #
@@ -214,8 +214,8 @@ if uploaded_file is not None:
                 chart4 = px.line(raw_data, x='date', y=['TCR1', 'rollModel'])
 
                 st.text('Score r2: ' +
-                        str(r2_score(raw_data['TCR1'], raw_data['rollModel'])))
-
+                        str(round(
+                            r2_score(raw_data['TCR1'], raw_data['rollModel']), 5)))
                 st.plotly_chart(chart4)
 
         with st.expander('Suavizamiento Exponencial'):
@@ -277,6 +277,8 @@ if uploaded_file is not None:
 
             realValueText = ('Valor real: ' + str(real_TCR1))
 
+            dateDiffText = None
+
             modelPred = ExponentialSmoothing(
                 raw_data['TCR1'][:index], seasonal=None, damped=True, trend='add')
 
@@ -303,6 +305,9 @@ if uploaded_file is not None:
             realValueText = ('Valor real: N/A')
 
             diff = (d - raw_data['date'].iloc[-1]).days
+
+            dateDiffText = (
+                'Días hacia el futuro en relación al archivo cargado: ' + str(diff))
 
             modelPred = ExponentialSmoothing(
                 raw_data['TCR1'], seasonal=None, damped=True, trend='add')
@@ -333,6 +338,9 @@ if uploaded_file is not None:
         progress_bar.empty()
 
         st.text(realValueText)
+
+        if dateDiffText is not None:
+            st.text(dateDiffText)
 
         st.text(predictionText)
 
